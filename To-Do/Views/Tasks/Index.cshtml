@@ -1,0 +1,61 @@
+﻿@model IEnumerable<To_Do.Models.UserTask>
+
+@{
+    ViewData["Title"] = "Task List";
+}
+
+<h1>Task List</h1>
+
+<p>
+    <a asp-action="Create">Create New Task</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                <a class="text-decoration-none text-dark" asp-action="Index" asp-route-sortOrder="@ViewData["DeadlineSortParm"]">Deadline</a>
+            </th>
+            <th>
+                <a class="text-decoration-none text-dark" asp-action="Index" asp-route-sortOrder="@ViewData["PrioritySortParm"]">Priority</a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCompleted)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr style="@(item.IsCompleted ? "" : (item.Deadline < DateTime.Now ? "text-decoration: line-through;" : ""))">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Deadline)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Priority)
+                </td>
+                <td>
+                    @(item.Deadline < DateTime.Now ? "Incomplete" : "Pending")
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

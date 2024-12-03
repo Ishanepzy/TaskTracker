@@ -1,0 +1,35 @@
+﻿@model TaskCompletionRateViewModel
+
+<h2>Task Completion Rate</h2>
+
+<p>Completion Rate: @Model.CompletionRate%</p>
+
+<canvas id="completion-rate-chart"></canvas>
+<div class="d-flex flex-grow-1">
+<script>
+    var ctx = document.getElementById("completion-rate-chart").getContext("2d");
+    var completionRate = @Model.CompletionRate;
+    var notCompletedRate = @Model.notCompletedRate;
+    var PendingRate = @Model.PendingRate;
+
+    var chart = new Chart(ctx, {
+        type: "pie",
+        data: {
+            labels: ["Completed", "Not Completed", "Pending"],
+            datasets: [{
+                label: "Completion Rate",
+                data: [completionRate, notCompletedRate, PendingRate],
+                backgroundColor: ["#4CAF50", "#FF9800", "#954535"],
+                borderColor: ["#4CAF50", "#FF9800", "#954535"],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: "Task Completion Rate"
+            }
+        }
+    });
+</script>
+</div>

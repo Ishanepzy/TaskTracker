@@ -1,0 +1,10 @@
+﻿@model To_Do.Controllers.AccountController
+
+<h2>Logout</h2>
+
+<p>Are you sure you want to log out?</p>
+
+<form asp-action="Logout" method="post">
+    <button type="submit">Yes, log me out</button>
+</form>
+<a asp-action="Login" controller="Account">Cancel</a>

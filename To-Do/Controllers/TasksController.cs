@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using To_Do.Models;
 using To_Do.Services;
 using TaskModel = To_Do.Models.UserTask;

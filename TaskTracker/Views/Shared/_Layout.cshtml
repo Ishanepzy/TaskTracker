@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - TaskTracker</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    @* <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
+        /* .d-flex {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        } */
+
+        #body {
+            flex: 1; 
+        }
+
+        footer {
+            background-color: #f8f9fa;
+        }
+    </style> *@
+</head>
+<body style="background-image: url('/Images/bg.jpeg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Tasks" asp-action="Index">
+                    <img src="/Images/logo.png" alt="TaskTracker Logo" width="40" height="40" /> TaskTracker
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                    <ul class="navbar-nav flex-grow-1 d-flex justify-content-center">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark align-center" asp-area="" asp-controller="Tasks" asp-action="Index">Tasks</a>
+                        </li>
+                        <div class="vr"></div>
+                        <div>
+                            <a class="nav-link text-dark align-center" id="completedTasksLink" href="#">
+                                CompletedTasks
+                            </a>
+                            <div id="completedTasksWindow" style="display: none;">
+                                @await Component.InvokeAsync("CompletedTasks")
+                            </div>
+
+                            <style>
+                                #completedTasksWindow {
+                                    position: fixed;
+                                    top: 30%;
+                                    left: 50%;
+                                    transform: translate(-50%, -50%);
+                                    width: 600px; 
+                                    background-color: #fff;
+                                    border: 10px solid #ddd;
+                                    padding: 20px;
+                                    display: none;
+                                }
+                            </style>
+
+                            <script>
+                                document.getElementById("completedTasksLink").addEventListener("click", function () {
+                                    document.getElementById("completedTasksWindow").style.display = "block";
+                                });
+                            </script>
+                        </div>
+                        <div class="vr"></div>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Tasks" asp-action="TaskCompletionRate">Task Completion Rate</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav flex-grow-1 d-flex justify-content-end ml-auto">
+                        <li class="nav-item">
+                                @Html.AntiForgeryToken()
+                            <a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">Logout</a>
+                        </li>
+                    </ul>
+                    }
+                    else
+                    {
+                        <ul class="navbar-nav flex-grow-1 d-flex justify-content-end ml-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Register">Register</a>
+                            </li>
+                        </ul>
+                    }
+                </div>   
+            </div>
+        </nav>
+    </header>
+    <div class="container" id="body">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <footer class="border-top footer text-muted footer p-3 fixed-bottom">
+        <div class="container">
+            &copy; 2024 - TaskTracker - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

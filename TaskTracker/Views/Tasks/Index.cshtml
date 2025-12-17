@@ -1,0 +1,82 @@
+﻿@model IEnumerable<TaskTracker.Models.UserTask>
+
+@{
+    ViewData["Title"] = "Task List";
+    var statusFilter = Context.Request.Query["status"].ToString();
+    string allOption = string.IsNullOrEmpty(statusFilter) ? "<option value=\"\" selected>All</option>" : "<option value=\"\">All</option>";
+    string completedOption = statusFilter == "completed" ? "<option value=\"completed\" selected>Completed</option>" : "<option value=\"completed\">Completed</option>";
+    string incompleteOption = statusFilter == "incomplete" ? "<option value=\"incomplete\" selected>Incomplete</option>" : "<option value=\"incomplete\">Incomplete</option>";
+}
+
+<h1>Task List</h1>
+
+<form method="get" action="/Tasks/Index" class="mb-3">
+    <label for="status" class="form-label">Show:</label>
+    <select id="status" name="status" class="form-select" onchange="this.form.submit()">
+        @Html.Raw(allOption)
+        @Html.Raw(completedOption)
+        @Html.Raw(incompleteOption)
+    </select>
+</form>
+
+<p>
+    <a href="/Tasks/Create">Create New Task</a>
+    |
+    <a href="/Tasks/AssignedToTasks">View by Assignee</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                <a class="text-decoration-none text-dark" href="/Tasks/Index?sortOrder=@ViewData["DeadlineSortParm"]">Deadline</a>
+            </th>
+            <th>
+                <a class="text-decoration-none text-dark" href="/Tasks/Index?sortOrder=@ViewData["PrioritySortParm"]">Priority</a>
+            </th>
+            <th>
+                Assigned To
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCompleted)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr style="@(item.IsCompleted ? "" : (item.Deadline < DateTime.Now ? "text-decoration: line-through;" : ""))">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Deadline)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Priority)
+                </td>
+                <td>
+                    @(string.IsNullOrWhiteSpace(item.AssignedTo) ? "Unassigned" : item.AssignedTo)
+                </td>
+                <td>
+                    @(item.IsCompleted ? "Completed" : (item.Deadline < DateTime.Now ? "Incomplete" : "Pending"))
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

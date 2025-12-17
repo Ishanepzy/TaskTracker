@@ -1,0 +1,79 @@
+@model TaskTracker.Models.AssignedToTasksViewModel
+
+@{
+    ViewData["Title"] = "Tasks by Assignee";
+}
+
+<h1>Tasks by Assignee</h1>
+
+@if (!Model.Assignees.Any())
+{
+    <div class="alert alert-info">
+        No assignees found yet. Assign a task to someone from the Create or Edit pages to see them listed here.
+    </div>
+}
+else if (string.IsNullOrWhiteSpace(Model.SelectedAssignee))
+{
+    <div class="alert alert-secondary">
+        Select a name below to view tasks assigned to that person.
+    </div>
+}
+else if (!Model.Tasks.Any())
+{
+    <div class="alert alert-warning">
+        No tasks are currently assigned to @Model.SelectedAssignee.
+    </div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Tasks.First().Title)</th>
+                <th>@Html.DisplayNameFor(model => model.Tasks.First().Description)</th>
+                <th>@Html.DisplayNameFor(model => model.Tasks.First().Deadline)</th>
+                <th>@Html.DisplayNameFor(model => model.Tasks.First().Priority)</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var task in Model.Tasks)
+        {
+            <tr>
+                <td>@task.Title</td>
+                <td>@task.Description</td>
+                <td>@task.Deadline.ToString("g")</td>
+                <td>@task.Priority</td>
+                <td>@(task.IsCompleted ? "Completed" : (task.Deadline < DateTime.Now ? "Overdue" : "Pending"))</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+<hr />
+
+<div class="mt-4">
+    <form asp-action="AssignedToTasks" method="get" class="row g-3">
+        <div class="col-md-4">
+            <label for="assigneeSelect" class="form-label">Filter by Assignee</label>
+            <select id="assigneeSelect" name="assignee" class="form-select">
+                <option value="">-- Select --</option>
+                @foreach (var assignee in Model.Assignees)
+                {
+                    <option value="@assignee" selected="@(assignee == Model.SelectedAssignee)">
+                        @assignee
+                    </option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2 align-self-end">
+            <button type="submit" class="btn btn-primary w-100">View Tasks</button>
+        </div>
+    </form>
+</div>
+
+<div class="mt-3">
+    <a asp-action="Index">Back to Task List</a>
+</div>
+

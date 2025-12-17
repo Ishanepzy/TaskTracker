@@ -1,0 +1,73 @@
+﻿@model TaskTracker.Models.UserTask
+@using System.Linq
+
+@{
+    ViewData["Title"] = "Create Task";
+}
+
+<h1>Create Task</h1>
+
+<h4>Task</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Deadline" class="control-label"></label>
+                <input asp-for="Deadline" class="form-control" />
+                <span asp-validation-for="Deadline" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Priority" class="control-label"></label>
+                <input asp-for="Priority" class="form-control" />
+                <span asp-validation-for="Priority" class="text-danger"></span>
+            </div>
+            @{
+                var existingAssignees = ViewBag.ExistingAssignees as IEnumerable<string> ?? Enumerable.Empty<string>();
+            }
+            @if (existingAssignees.Any())
+            {
+                <div class="form-group">
+                    <label class="control-label" for="selectedAssignee">Select Existing Assignee</label>
+                    <select class="form-control" id="selectedAssignee" name="selectedAssignee">
+                        <option value="">-- Choose an assignee --</option>
+                        @foreach (var assignee in existingAssignees)
+                        {
+                            <option value="@assignee">@assignee</option>
+                        }
+                    </select>
+                    <small class="form-text text-muted">Leave blank if you are adding a new assignee below.</small>
+                </div>
+            }
+            <div class="form-group">
+                <label asp-for="AssignedTo" class="control-label">Add New Assignee</label>
+                <input asp-for="AssignedTo" class="form-control" />
+                <span asp-validation-for="AssignedTo" class="text-danger"></span>
+                <small class="form-text text-muted">Type a new name or email if it is not in the list.</small>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsCompleted" class="control-label"></label>
+                <input asp-for="IsCompleted" type="checkbox"/>
+                <span asp-validation-for="IsCompleted" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>

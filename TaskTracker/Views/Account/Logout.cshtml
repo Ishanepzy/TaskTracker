@@ -1,11 +1,10 @@
-﻿@model TaskTracker.Controllers.AccountController
-
-@{
+﻿@{
     ViewData["Title"] = "Logout";
 }
 
 <h2>Logout</h2>
 
-<form asp-action="Logout" method="post">
+<form asp-controller="Account" asp-action="Logout" method="post">
+    @Html.AntiForgeryToken()
     <button type="submit" class="btn btn-danger">Logout</button>
 </form>

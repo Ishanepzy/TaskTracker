@@ -83,7 +83,10 @@
                     <ul class="navbar-nav flex-grow-1 d-flex justify-content-end ml-auto">
                         <li class="nav-item">
                                 @Html.AntiForgeryToken()
-                            <a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">Logout</a>
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-link nav-link text-dark" style="padding: 0; border: none; background: none;">Logout</button>
+                                </form>
                         </li>
                     </ul>
                     }
